@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>???</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* The void */
+    html, body {
+      background: #000000;
+      margin: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* No grain. Pure void. */
+    body::after { display: none; }
+
+    /* Navbar — barely visible */
+    .navbar {
+      background: rgba(0,0,0,0.9);
+      border-bottom-color: rgba(255,215,0,0.04);
+    }
+
+    .navbar-logo { color: rgba(255,215,0,0.15); }
+    .navbar-nav a { color: rgba(232,224,204,0.1); }
+    .navbar-nav a:hover { color: rgba(232,224,204,0.25); }
+    .navbar-nav a::after { background: rgba(255,215,0,0.15); }
+
+    /* Main — just stacks naturally, no centering */
+    .void-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-top: 64px; /* navbar height */
+      position: relative;
+    }
+
+    /* Subtle static noise */
+    .void-main::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      animation: static-noise 0.2s steps(1) infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Full-width photo */
+    .senya-photo-wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 60vh;
+      min-height: 400px;
+      cursor: none;
+      overflow: hidden;
+    }
+
+    .senya-photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%);
+      display: block;
+      transition: filter 0.4s ease;
+    }
+
+    /* The three dots */
+    #senya-dots {
+      opacity: 0;
+      padding: 40px 0 60px;
+      font-family: var(--font-elegant);
+      font-size: 0.85rem;
+      color: rgba(150,150,150,0.4);
+      letter-spacing: 0.2em;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── LIGHTBOX ── */
+    #senya-lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #000;
+      cursor: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #senya-lightbox.open {
+      display: flex;
+    }
+
+    #senya-lightbox img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: grayscale(100%);
+      display: block;
+    }
+
+    /* Footer — very low opacity */
+    .footer {
+      opacity: 0.3;
+      border-top-color: rgba(255,215,0,0.03);
+    }
+
+    .footer-links a {
+      color: rgba(232,224,204,0.15);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-logo">Вагинокапиталисты</div>
+  <ul class="navbar-nav">
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="tierlist.html">Тир-лист</a></li>
+    <li><a href="vsevolod.html">Храм</a></li>
+    <li><a href="pasha.html">Паша</a></li>
+    <li><a href="tikhon.html">Тихон</a></li>
+    <li><a href="mark.html">Марк</a></li>
+    <li><a href="senya.html">???</a></li>
+  </ul>
+  <button class="navbar-hamburger" aria-label="Меню"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" style="background: #000;">
+  <a href="index.html">Главная</a>
+  <a href="tierlist.html">Тир-лист</a>
+  <a href="vsevolod.html">Храм Всеволода</a>
+  <a href="pasha.html">Паша</a>
+  <a href="tikhon.html">Тихон</a>
+  <a href="mark.html">Марк</a>
+  <a href="senya.html">???</a>
+</div>
+
+<!-- THE VOID -->
+<main class="void-main">
+  <div class="senya-photo-wrap" id="senya-photo-trigger">
+    <img src="photos/senya/IMG_2318.JPG" alt="?"/>
+  </div>
+
+  <div id="senya-dots">...</div>
+</main>
+
+<!-- LIGHTBOX -->
+<div id="senya-lightbox">
+  <img src="photos/senya/IMG_2318.JPG" alt="?"/>
+</div>
+
+<footer class="footer">
+  <div class="footer-crown" style="opacity:0.3;">♛</div>
+  <div class="footer-title" style="opacity:0.3;">Вагинокапиталисты</div>
+  <div class="footer-divider"></div>
+  <p class="footer-sub" style="opacity:0.3;">Официальный рейтинг. Версия окончательная. Обжалованию не подлежит.</p>
+  <div class="footer-links">
+    <a href="index.html">Главная</a>
+    <a href="tierlist.html">Тир-лист</a>
+    <a href="vsevolod.html">Храм</a>
+    <a href="pasha.html">Паша</a>
+    <a href="tikhon.html">Тихон</a>
+    <a href="mark.html">Марк</a>
+    <a href="senya.html">???</a>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+  // Lightbox toggle
+  const trigger  = document.getElementById('senya-photo-trigger');
+  const lightbox = document.getElementById('senya-lightbox');
+
+  trigger.addEventListener('click', () => lightbox.classList.add('open'));
+  lightbox.addEventListener('click', () => lightbox.classList.remove('open'));
+
+  // Escape key closes lightbox
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') lightbox.classList.remove('open');
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ВСЕВОЛОД — Храм Всемогущего</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── HERO ── */
+    .vsevolod-hero {
+      position: relative;
+      height: 100vh;
+      min-height: 640px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    #particle-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Crown watermark pattern */
+    .vsevolod-hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 70% at 50% 50%, rgba(184,134,11,0.12) 0%, transparent 70%),
+        repeating-linear-gradient(45deg,
+          transparent 0px, transparent 60px,
+          rgba(184,134,11,0.015) 60px, rgba(184,134,11,0.015) 62px
+        );
+      pointer-events: none;
+    }
+
+    /* Floating crown watermarks */
+    .vsevolod-hero-crowns {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .hero-crown-float {
+      position: absolute;
+      font-size: 2rem;
+      color: var(--gold);
+      opacity: 0.04;
+      animation: float-slow linear infinite;
+      user-select: none;
+    }
+
+    .vsevolod-hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 var(--spacing-md);
+    }
+
+    .vsevolod-title-wrap {
+      position: relative;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    /* The photo */
+    .vsevolod-hero-photo {
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      padding: 4px;
+      background: conic-gradient(var(--gold), var(--gold-dark), var(--gold-pale), var(--gold-dark), var(--gold));
+      animation: spin-slow 8s linear infinite;
+      margin: 0 auto var(--spacing-xl);
+      box-shadow: 0 0 40px rgba(255,215,0,0.4), 0 0 100px rgba(255,215,0,0.15);
+      display: block;
+    }
+
+    .vsevolod-hero-photo img {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .vsevolod-hero-title {
+      font-family: var(--font-imperial);
+      font-size: clamp(1.4rem, 3.5vw, 3.2rem);
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      line-height: 1.15;
+      animation: shimmer 3.5s ease-in-out infinite, fade-in-up 1s ease 0.3s both;
+      text-transform: uppercase;
+    }
+
+    .vsevolod-hero-subtitle {
+      font-family: var(--font-elegant);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: rgba(232,224,204,0.6);
+      margin-top: var(--spacing-md);
+      animation: fade-in-up 1s ease 0.6s both;
+    }
+
+    /* ── ACHIEVEMENTS ── */
+    .achievements-section {
+      padding: var(--spacing-2xl) var(--spacing-xl);
+      position: relative;
+      background: linear-gradient(180deg, var(--black) 0%, rgba(184,134,11,0.04) 50%, var(--black) 100%);
+    }
+
+    .scroll-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: linear-gradient(135deg,
+        rgba(184,134,11,0.06) 0%,
+        rgba(10,10,10,0.95) 30%,
+        rgba(184,134,11,0.03) 100%
+      );
+      border: 1px solid rgba(255,215,0,0.2);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-2xl) var(--spacing-2xl);
+      position: relative;
+    }
+
+    .scroll-container::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .scroll-container::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .scroll-title {
+      font-family: var(--font-imperial);
+      font-size: clamp(1.2rem, 2.5vw, 2rem);
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .achievement-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+
+    .achievement-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--spacing-md);
+      align-items: baseline;
+      padding-bottom: var(--spacing-md);
+      border-bottom: 1px solid rgba(255,215,0,0.06);
+    }
+
+    .achievement-item:last-child { border-bottom: none; }
+
+    .achievement-star {
+      color: var(--gold);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .achievement-label {
+      font-family: var(--font-imperial);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .achievement-text {
+      font-family: var(--font-elegant);
+      font-size: 1rem;
+      color: rgba(232,224,204,0.8);
+      line-height: 1.5;
+    }
+
+    /* ── STATS ── */
+    .stats-section {
+      padding: var(--spacing-2xl) var(--spacing-xl);
+      background: var(--gray-mid);
+      clip-path: polygon(0 3%, 100% 0, 100% 97%, 0 100%);
+      position: relative;
+      z-index: 1;
+    }
+
+    .stats-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .stats-header {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .stats-rpg-label {
+      font-family: var(--font-imperial);
+      font-size: 0.55rem;
+      letter-spacing: 0.6em;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-lg) var(--spacing-2xl);
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-section {
+      padding: var(--spacing-2xl) var(--spacing-xl);
+    }
+
+    .testimonials-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ── GALLERY ── */
+    .gallery-section {
+      padding: var(--spacing-2xl) var(--spacing-xl);
+      background: var(--gray-mid);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 240px;
+      gap: var(--spacing-sm);
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-sm);
+    }
+
+    .gallery-item::after {
+      content: attr(data-caption);
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 60%);
+      display: flex;
+      align-items: flex-end;
+      padding: var(--spacing-md);
+      font-family: var(--font-elegant);
+      font-style: italic;
+      font-size: 0.75rem;
+      color: rgba(255,215,0,0.8);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .gallery-item:hover::after { opacity: 1; }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: sepia(20%) saturate(1.2);
+      transition: transform 0.5s ease, filter 0.3s ease;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.05);
+      filter: sepia(30%) saturate(1.4);
+    }
+
+    .gallery-item-large { grid-column: span 2; grid-row: span 2; }
+
+    @media (max-width: 768px) {
+      .scroll-container { padding: var(--spacing-lg); }
+      .stats-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-item-large { grid-column: span 2; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-logo">Вагинокапиталисты</div>
+  <ul class="navbar-nav">
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="tierlist.html">Тир-лист</a></li>
+    <li><a href="vsevolod.html">Храм</a></li>
+    <li><a href="pasha.html">Паша</a></li>
+    <li><a href="tikhon.html">Тихон</a></li>
+    <li><a href="mark.html">Марк</a></li>
+    <li><a href="senya.html">???</a></li>
+  </ul>
+  <button class="navbar-hamburger" aria-label="Меню"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu">
+  <a href="index.html">Главная</a>
+  <a href="tierlist.html">Тир-лист</a>
+  <a href="vsevolod.html">Храм Всеволода</a>
+  <a href="pasha.html">Паша</a>
+  <a href="tikhon.html">Тихон</a>
+  <a href="mark.html">Марк</a>
+  <a href="senya.html">???</a>
+</div>
+
+<!-- HERO -->
+<section class="vsevolod-hero">
+  <canvas id="particle-canvas"></canvas>
+  <div class="vsevolod-hero-bg parallax-hero"></div>
+
+  <div class="vsevolod-hero-crowns">
+    <span class="hero-crown-float" style="left:5%;top:15%;animation-duration:12s;font-size:3rem;">♛</span>
+    <span class="hero-crown-float" style="left:90%;top:20%;animation-duration:15s;font-size:2rem;">♛</span>
+    <span class="hero-crown-float" style="left:15%;top:70%;animation-duration:18s;font-size:1.5rem;">♛</span>
+    <span class="hero-crown-float" style="left:80%;top:75%;animation-duration:11s;font-size:2.5rem;">♛</span>
+    <span class="hero-crown-float" style="left:50%;top:10%;animation-duration:20s;font-size:1rem;">♛</span>
+  </div>
+
+  <div class="vsevolod-hero-content">
+    <div class="vsevolod-hero-photo">
+      <img src="photos/vsevolod/IMG_0241.jpg" alt="Всеволод" style="object-fit:cover;"/>
+    </div>
+
+    <div class="vsevolod-title-wrap">
+      <h1 class="vsevolod-hero-title">Всемогущий<br/>Господин<br/>Всеволод</h1>
+    </div>
+
+    <p class="vsevolod-hero-subtitle">
+      Воплощение совершенства. Живая легенда. Единственный.
+    </p>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>Приступить к поклонению</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section class="achievements-section">
+  <div class="container">
+    <div class="scroll-container animate-in">
+      <h2 class="scroll-title section-title">Книга Рекордов</h2>
+      <ul class="achievement-list">
+        <li class="achievement-item">
+          <span class="achievement-star">★</span>
+          <div>
+            <span class="achievement-label">Телосложение</span>
+            <span class="achievement-text">Качок. Реальный. Не фейк. <em>(в отличие от некоторых)</em></span>
+          </div>
+        </li>
+        <li class="achievement-item">
+          <span class="achievement-star">★</span>
+          <div>
+            <span class="achievement-label">Дисциплина</span>
+            <span class="achievement-text">Просыпается раньше всех. Всегда. Без исключений. Включая выходные.</span>
+          </div>
+        </li>
+        <li class="achievement-item">
+          <span class="achievement-star">★</span>
+          <div>
+            <span class="achievement-label">Девушка</span>
+            <span class="achievement-text">Объективно самая красивая. Учёные подтвердили. Данные засекречены.</span>
+          </div>
+        </li>
+        <li class="achievement-item">
+          <span class="achievement-star">★</span>
+          <div>
+            <span class="achievement-label">Бизнес</span>
+            <span class="achievement-text">3 запущенных проекта пока другие сидят дома и смотрят тиктоки.</span>
+          </div>
+        </li>
+        <li class="achievement-item">
+          <span class="achievement-star">★</span>
+          <div>
+            <span class="achievement-label">Музыка</span>
+            <span class="achievement-text">Музыкальная школа окончена с отличием. Моцарт бы гордился. Бетховен тоже.</span>
+          </div>
+        </li>
+        <li class="achievement-item">
+          <span class="achievement-star">★</span>
+          <div>
+            <span class="achievement-label">Интеллект</span>
+            <span class="achievement-text">Самый умный в комнате. В любой комнате. Включая ту, где его нет.</span>
+          </div>
+        </li>
+        <li class="achievement-item">
+          <span class="achievement-star">★</span>
+          <div>
+            <span class="achievement-label">Внешность</span>
+            <span class="achievement-text">Зеркала просят автограф. Фотоаппараты сами нажимают кнопку.</span>
+          </div>
+        </li>
+        <li class="achievement-item">
+          <span class="achievement-star">★</span>
+          <div>
+            <span class="achievement-label">Прочее</span>
+            <span class="achievement-text">...и самый большой в любом смысле этого слова.</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-section">
+  <div class="stats-inner">
+    <div class="stats-header animate-in">
+      <span class="stats-rpg-label">RPG Character Sheet · Обновлено Богом Лично</span>
+      <h2 class="section-title" style="font-size: clamp(1.6rem,3.5vw,2.8rem);">Характеристики Полубога</h2>
+      <div class="gold-line" style="margin:0 auto;"></div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-row animate-in">
+        <div class="stat-label">
+          <span>Сила</span>
+          <span class="stat-value">100</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="100">
+          <div class="stat-fill stat-fill-gold"></div>
+        </div>
+      </div>
+      <div class="stat-row animate-in">
+        <div class="stat-label">
+          <span>Интеллект</span>
+          <span class="stat-value">100</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="100">
+          <div class="stat-fill stat-fill-gold"></div>
+        </div>
+      </div>
+      <div class="stat-row animate-in">
+        <div class="stat-label">
+          <span>Харизма</span>
+          <span class="stat-value">100</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="100">
+          <div class="stat-fill stat-fill-gold"></div>
+        </div>
+      </div>
+      <div class="stat-row animate-in">
+        <div class="stat-label">
+          <span>Стиль</span>
+          <span class="stat-value">100</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="100">
+          <div class="stat-fill stat-fill-gold"></div>
+        </div>
+      </div>
+      <div class="stat-row animate-in">
+        <div class="stat-label">
+          <span>Дисциплина</span>
+          <span class="stat-value">100</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="100">
+          <div class="stat-fill stat-fill-gold"></div>
+        </div>
+      </div>
+      <div class="stat-row animate-in">
+        <div class="stat-label">
+          <span>Бизнес-чутьё</span>
+          <span class="stat-value">100</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="100">
+          <div class="stat-fill stat-fill-gold"></div>
+        </div>
+      </div>
+      <div class="stat-row animate-in">
+        <div class="stat-label">
+          <span>Музыкальность</span>
+          <span class="stat-value">100</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="100">
+          <div class="stat-fill stat-fill-gold"></div>
+        </div>
+      </div>
+      <div class="stat-row animate-in">
+        <div class="stat-label">
+          <span>"Размер"</span>
+          <span class="stat-value">100</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="100">
+          <div class="stat-fill stat-fill-gold"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="testimonials-inner">
+    <div style="text-align:center; margin-bottom: var(--spacing-xl);" class="animate-in">
+      <p class="section-eyebrow">Свидетельства очевидцев</p>
+      <h2 class="section-title" style="font-size: clamp(1.6rem,3.5vw,2.8rem);">Что говорят люди</h2>
+      <div class="gold-line" style="margin:0 auto;"></div>
+    </div>
+
+    <div class="animate-in">
+      <div class="testimonial">
+        <p class="testimonial-text">"Когда он вошёл в комнату, я понял — я видел Бога. Мне нет смысла продолжать карьеру."</p>
+        <p class="testimonial-author">— Анонимный очевидец, перенёс личное потрясение</p>
+      </div>
+
+      <div class="testimonial">
+        <p class="testimonial-text">"Я хотел бы быть им, но это физически невозможно. Природа создала что-то раз в эпоху — и это он."</p>
+        <p class="testimonial-author">— Философ, ушёл на пенсию после встречи</p>
+      </div>
+
+      <div class="testimonial">
+        <p class="testimonial-text">"Мы изучили его ДНК. Результаты засекречены из соображений безопасности. Я могу сказать одно: это не то, что мы ожидали найти."</p>
+        <p class="testimonial-author">— Учёный, институт предпочёл сохранить анонимность</p>
+      </div>
+
+      <div class="testimonial">
+        <p class="testimonial-text">"Его достижения заставили меня переосмыслить смысл слова «возможное». Словари нуждаются в обновлении."</p>
+        <p class="testimonial-author">— Академик, автор восьми монографий</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section">
+  <div class="container">
+    <div style="text-align:center; margin-bottom: var(--spacing-xl);" class="animate-in">
+      <p class="section-eyebrow">Фотоархив</p>
+      <h2 class="section-title" style="font-size: clamp(1.6rem,3.5vw,2.8rem);">Лучшие Моменты Истории</h2>
+      <div class="gold-line" style="margin:0 auto;"></div>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gallery-item gallery-item-large" data-caption="Легенда в своей стихии">
+        <img src="photos/vsevolod/IMG_0241.jpg" alt="Легенда" style="object-fit:cover;"/>
+      </div>
+      <div class="gallery-item" data-caption="Момент величия">
+        <img src="photos/vsevolod/IMG_0080.jpg" alt="Величие" style="object-fit:cover;"/>
+      </div>
+      <div class="gallery-item" data-caption="История запомнит">
+        <img src="photos/vsevolod/IMG_0478.jpg" alt="История" style="object-fit:cover;"/>
+      </div>
+      <div class="gallery-item" data-caption="Ещё один триумф">
+        <img src="photos/vsevolod/IMG_2122.jpg" alt="Триумф" style="object-fit:cover;"/>
+      </div>
+      <div class="gallery-item" data-caption="Без комментариев">
+        <img src="photos/vsevolod/IMG_2149.jpg" alt="Без комментариев" style="object-fit:cover;"/>
+      </div>
+      <div class="gallery-item" data-caption="Документальное свидетельство">
+        <img src="photos/vsevolod/IMG_2193.jpg" alt="Документальное свидетельство" style="object-fit:cover;"/>
+      </div>
+      <div class="gallery-item" data-caption="Классика жанра">
+        <img src="photos/vsevolod/IMG_2311.jpg" alt="Классика жанра" style="object-fit:cover;"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="verdict-box verdict-box-gold animate-in">
+  <p class="verdict-text">
+    "Один. Уникальный. Подлинный.<br/>
+    Все остальные — тени на стене его пещеры."
+  </p>
+</div>
+
+<footer class="footer">
+  <div class="footer-crown">♛</div>
+  <div class="footer-title">Вагинокапиталисты</div>
+  <div class="footer-divider"></div>
+  <p class="footer-sub">Официальный рейтинг. Версия окончательная. Обжалованию не подлежит.</p>
+  <div class="footer-links">
+    <a href="index.html">Главная</a>
+    <a href="tierlist.html">Тир-лист</a>
+    <a href="vsevolod.html">Храм</a>
+    <a href="pasha.html">Паша</a>
+    <a href="tikhon.html">Тихон</a>
+    <a href="mark.html">Марк</a>
+    <a href="senya.html">???</a>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

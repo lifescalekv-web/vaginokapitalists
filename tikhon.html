@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ТИХОН — Вечный Рейдж</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    :root {
+      --tikhon-orange: #3d1a00;
+      --tikhon-orange-mid: #7a2e00;
+      --tikhon-orange-pale: #e07000;
+      --tikhon-border: rgba(100,40,0,0.5);
+    }
+
+    /* ── HEADER ── */
+    .tikhon-header {
+      padding: 140px var(--spacing-xl) var(--spacing-2xl);
+      position: relative;
+      overflow: hidden;
+      clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+      background: linear-gradient(160deg,
+        rgba(61,26,0,0.5) 0%,
+        var(--black) 55%
+      );
+    }
+
+    .tikhon-header::before {
+      content: 'D';
+      position: absolute;
+      right: -20px; bottom: -40px;
+      font-family: var(--font-stats);
+      font-size: clamp(200px,28vw,380px);
+      color: rgba(100,40,0,0.07);
+      line-height: 0.8;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .tikhon-header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tikhon-tier-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(100,40,0,0.25);
+      border: 1px solid var(--tikhon-border);
+      border-radius: var(--radius-full);
+      padding: 6px 20px;
+      font-family: var(--font-imperial);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--tikhon-orange-pale);
+      text-transform: uppercase;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .tikhon-name {
+      font-family: var(--font-stats);
+      font-size: clamp(4rem, 12vw, 10rem);
+      color: var(--tikhon-orange-pale);
+      line-height: 0.9;
+      letter-spacing: 0.05em;
+      animation: glitch 3s ease-in-out infinite;
+    }
+
+    .tikhon-subtitle {
+      font-family: var(--font-elegant);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: rgba(232,224,204,0.4);
+      margin-top: var(--spacing-md);
+      animation: glitch 7s ease-in-out infinite;
+    }
+
+    /* ── BIO ── */
+    .tikhon-bio-section {
+      padding: var(--spacing-2xl) var(--spacing-xl);
+    }
+
+    .tikhon-bio-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: var(--spacing-2xl);
+      align-items: start;
+    }
+
+    .tikhon-photo {
+      width: 220px; height: 220px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--tikhon-border);
+      box-shadow: 0 0 30px rgba(100,40,0,0.25);
+    }
+
+    .tikhon-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: hue-rotate(15deg) contrast(120%) saturate(1.3) brightness(0.8);
+    }
+
+    .tikhon-field {
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px solid rgba(100,40,0,0.15);
+    }
+
+    .tikhon-field:last-child { border-bottom: none; }
+
+    .tikhon-field-key {
+      font-family: var(--font-imperial);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--tikhon-orange-pale);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .tikhon-field-val {
+      font-family: var(--font-elegant);
+      font-size: 0.95rem;
+      color: rgba(232,224,204,0.7);
+    }
+
+    /* ── HAIR SECTION ── */
+    .hair-section {
+      padding: var(--spacing-2xl) var(--spacing-xl);
+      background: var(--gray-mid);
+      clip-path: polygon(0 3%, 100% 0, 100% 97%, 0 100%);
+      position: relative;
+    }
+
+    .hair-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hair-section-title {
+      font-family: var(--font-imperial);
+      font-size: clamp(1.2rem,2.5vw,2rem);
+      color: var(--tikhon-orange-pale);
+      text-align: center;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .hair-section-sub {
+      font-family: var(--font-elegant);
+      font-style: italic;
+      font-size: 0.85rem;
+      color: rgba(232,224,204,0.35);
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .hair-acts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-lg);
+    }
+
+    .hair-act {
+      background: rgba(61,26,0,0.1);
+      border: 1px solid rgba(100,40,0,0.25);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-lg);
+      text-align: center;
+    }
+
+    .hair-act-number {
+      font-family: var(--font-stats);
+      font-size: 3rem;
+      color: rgba(224,112,0,0.25);
+      line-height: 1;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .hair-act-title {
+      font-family: var(--font-imperial);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--tikhon-orange-pale);
+      text-transform: uppercase;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .hair-act-text {
+      font-family: var(--font-elegant);
+      font-style: italic;
+      font-size: 0.85rem;
+      color: rgba(232,224,204,0.55);
+      line-height: 1.5;
+    }
+
+    /* ── RAGE METER ── */
+    .rage-section {
+      padding: var(--spacing-2xl) var(--spacing-xl);
+    }
+
+    .rage-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .rage-meter-wrap {
+      background: rgba(61,26,0,0.15);
+      border: 1px solid var(--tikhon-border);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rage-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .rage-label-text {
+      font-family: var(--font-stats);
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;
+      color: var(--tikhon-orange-pale);
+    }
+
+    .rage-label-val {
+      font-family: var(--font-stats);
+      font-size: 1.5rem;
+      color: #ff4400;
+      animation: rage-flicker 0.5s ease-in-out infinite;
+    }
+
+    .rage-track {
+      height: 24px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 4px;
+      overflow: visible;
+      position: relative;
+    }
+
+    .rage-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4a0000, #ff2200, #ff6600);
+      border-radius: 4px;
+      width: 0%;
+      animation: rage-fill 2.5s cubic-bezier(0.23,1,0.32,1) 0.5s forwards;
+      box-shadow: 0 0 20px rgba(255,68,0,0.5);
+      position: relative;
+    }
+
+    .rage-fill::after {
+      content: '💢';
+      position: absolute;
+      right: -4px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.4rem;
+      animation: rage-flicker 0.3s ease-in-out infinite;
+    }
+
+    .rage-overflow-text {
+      font-family: var(--font-imperial);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: rgba(255,68,0,0.6);
+      text-align: center;
+      margin-top: var(--spacing-sm);
+      text-transform: uppercase;
+      animation: rage-flicker 0.4s ease-in-out infinite;
+    }
+
+    /* Stats */
+    .tikhon-stats {
+      margin-top: var(--spacing-xl);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-lg);
+    }
+
+    .stat-fill-orange {
+      background: linear-gradient(90deg, var(--tikhon-orange), var(--tikhon-orange-pale));
+    }
+
+    @media (max-width: 768px) {
+      .tikhon-bio-inner { grid-template-columns: 1fr; }
+      .tikhon-photo { width: 160px; height: 160px; }
+      .hair-acts { grid-template-columns: 1fr; }
+      .tikhon-stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-logo">Вагинокапиталисты</div>
+  <ul class="navbar-nav">
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="tierlist.html">Тир-лист</a></li>
+    <li><a href="vsevolod.html">Храм</a></li>
+    <li><a href="pasha.html">Паша</a></li>
+    <li><a href="tikhon.html">Тихон</a></li>
+    <li><a href="mark.html">Марк</a></li>
+    <li><a href="senya.html">???</a></li>
+  </ul>
+  <button class="navbar-hamburger" aria-label="Меню"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu">
+  <a href="index.html">Главная</a>
+  <a href="tierlist.html">Тир-лист</a>
+  <a href="vsevolod.html">Храм Всеволода</a>
+  <a href="pasha.html">Паша</a>
+  <a href="tikhon.html">Тихон</a>
+  <a href="mark.html">Марк</a>
+  <a href="senya.html">???</a>
+</div>
+
+<!-- HEADER -->
+<header class="tikhon-header scanlines">
+  <div class="tikhon-header-inner">
+    <div class="tikhon-tier-badge animate-in">⚡ Тир: D ⚡ Взрывоопасен</div>
+    <h1 class="tikhon-name animate-in">ТИХОН</h1>
+    <p class="tikhon-subtitle animate-in">Рейдж-машина с тупой причёской. Постоянно бомбит. Причёска виновата.</p>
+  </div>
+</header>
+
+<!-- BIO -->
+<section class="tikhon-bio-section">
+  <div class="tikhon-bio-inner">
+    <div class="animate-in">
+      <div class="tikhon-photo">
+        <img src="photos/tikhon/IMG_2319.JPG" alt="Тихон" style="object-fit:cover;"/>
+      </div>
+    </div>
+
+    <div class="animate-in">
+      <p class="section-eyebrow" style="color: var(--tikhon-orange-pale);">Личное дело</p>
+      <h2 class="section-title" style="font-size:clamp(1.4rem,3vw,2.2rem); color: var(--tikhon-orange-pale);">Досье</h2>
+      <div class="gold-line" style="background: linear-gradient(90deg, var(--tikhon-orange-pale), transparent);"></div>
+
+      <div class="tikhon-field">
+        <div class="tikhon-field-key">Специализация</div>
+        <div class="tikhon-field-val">Рейдж. Трибейтинг. Взрываться по любому поводу. Профессиональный уровень.</div>
+      </div>
+      <div class="tikhon-field">
+        <div class="tikhon-field-key">Состояние покоя</div>
+        <div class="tikhon-field-val">Теоретически существует. На практике не задокументировано.</div>
+      </div>
+      <div class="tikhon-field">
+        <div class="tikhon-field-key">Причина гнева</div>
+        <div class="tikhon-field-val">Всё. Буквально всё. Особенно когда его раздражают. И когда не раздражают тоже.</div>
+      </div>
+      <div class="tikhon-field">
+        <div class="tikhon-field-key">Самоконтроль</div>
+        <div class="tikhon-field-val" style="color: var(--tikhon-orange-pale);">2/100 — согласно последним замерам</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HAIR TRAGEDY -->
+<section class="hair-section">
+  <div class="hair-inner">
+    <div class="animate-in" style="text-align:center; margin-bottom: var(--spacing-xl);">
+      <p class="section-eyebrow" style="color: var(--tikhon-orange-pale);">Отдельный раздел</p>
+      <h2 class="hair-section-title">Причёска</h2>
+      <p class="hair-section-sub">Трагедия в трёх актах</p>
+      <div class="gold-line" style="margin:0 auto; background: linear-gradient(90deg, var(--tikhon-orange-pale), transparent);"></div>
+    </div>
+
+    <div class="hair-acts">
+      <div class="hair-act animate-in">
+        <div class="hair-act-number">I</div>
+        <div class="hair-act-title">Замысел</div>
+        <p class="hair-act-text">
+          "Я знаю, что делаю. Это будет хорошо выглядеть."
+          <br/><br/>
+          <em style="color:rgba(224,112,0,0.4); font-size:0.75rem;">Нет. Нет, не будет.</em>
+        </p>
+      </div>
+
+      <div class="hair-act animate-in">
+        <div class="hair-act-number">II</div>
+        <div class="hair-act-title">Реализация</div>
+        <p class="hair-act-text">
+          Что-то пошло не так. Возможно, всё сразу. Неясно, кто виноват больше — парикмахер или заказчик.
+        </p>
+      </div>
+
+      <div class="hair-act animate-in">
+        <div class="hair-act-number">III</div>
+        <div class="hair-act-title">Последствия</div>
+        <p class="hair-act-text">
+          Мы здесь. Мы видим это. История зафиксирована.
+          <br/><br/>
+          <em style="color:rgba(224,112,0,0.4); font-size:0.75rem;">Некоторые вещи нельзя развидеть.</em>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RAGE METER -->
+<section class="rage-section">
+  <div class="rage-inner">
+    <div style="text-align:center; margin-bottom: var(--spacing-xl);" class="animate-in">
+      <p class="section-eyebrow" style="color: var(--tikhon-orange-pale);">Измерение</p>
+      <h2 class="section-title" style="font-size: clamp(1.4rem,3vw,2.2rem); color: var(--tikhon-orange-pale);">Уровень рейджа</h2>
+      <div class="gold-line" style="background: linear-gradient(90deg, var(--tikhon-orange-pale), transparent);"></div>
+    </div>
+
+    <div class="rage-meter-wrap animate-in">
+      <div class="rage-label">
+        <span class="rage-label-text">RAGE METER</span>
+        <span class="rage-label-val">OVERFLOW</span>
+      </div>
+      <div class="rage-track">
+        <div class="rage-fill"></div>
+      </div>
+      <p class="rage-overflow-text">⚠ Предел шкалы превышен ⚠ Данные за пределами измерения ⚠</p>
+    </div>
+
+    <div class="tikhon-stats animate-in">
+      <div class="stat-row">
+        <div class="stat-label">
+          <span>Самоконтроль</span>
+          <span class="stat-value" style="color: var(--tikhon-orange-pale);">2</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="2">
+          <div class="stat-fill stat-fill-orange"></div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-label">
+          <span>Уровень рейджа</span>
+          <span class="stat-value" style="color: var(--tikhon-orange-pale);">∞</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="100">
+          <div class="stat-fill" style="background: linear-gradient(90deg, #7a0000, #ff2200); animation: rage-flicker 0.4s infinite;"></div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-label">
+          <span>Качество причёски</span>
+          <span class="stat-value" style="color: var(--tikhon-orange-pale);">4</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="4">
+          <div class="stat-fill stat-fill-orange"></div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-label">
+          <span>Будущее</span>
+          <span class="stat-value" style="color: var(--tikhon-orange-pale);">14</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="14">
+          <div class="stat-fill stat-fill-orange"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VERDICT -->
+<section style="padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-2xl);">
+  <div class="verdict-box verdict-box-red animate-in" style="border-color: var(--tikhon-orange-pale);">
+    <style>
+      .verdict-box-orange::before {
+        background: var(--black);
+        color: var(--tikhon-orange-pale);
+      }
+    </style>
+    <p class="verdict-text" style="color: rgba(232,224,204,0.75);">
+      "Неудачник в режиме постоянного рейджа.<br/>
+      Причёска не помогает.<br/>
+      <em style="font-size:0.85rem; color: rgba(224,112,0,0.5);">На самом деле делает хуже.</em>"
+    </p>
+  </div>
+  <div style="text-align:center; margin-top: var(--spacing-xl);">
+    <a href="tierlist.html" class="btn btn-crimson"><span>← Вернуться к тир-листу</span></a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-crown">♛</div>
+  <div class="footer-title">Вагинокапиталисты</div>
+  <div class="footer-divider"></div>
+  <p class="footer-sub">Официальный рейтинг. Версия окончательная. Обжалованию не подлежит.</p>
+  <div class="footer-links">
+    <a href="index.html">Главная</a>
+    <a href="tierlist.html">Тир-лист</a>
+    <a href="vsevolod.html">Храм</a>
+    <a href="pasha.html">Паша</a>
+    <a href="tikhon.html">Тихон</a>
+    <a href="mark.html">Марк</a>
+    <a href="senya.html">???</a>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

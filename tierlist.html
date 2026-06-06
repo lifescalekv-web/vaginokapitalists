@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Тир-лист — ВАГИНОКАПИТАЛИСТЫ</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── PAGE BANNER ── */
+    .tier-banner {
+      padding: 140px var(--spacing-xl) var(--spacing-2xl);
+      background: linear-gradient(160deg, var(--black) 0%, rgba(184,134,11,0.06) 50%, var(--black) 100%);
+      clip-path: polygon(0 0, 100% 0, 100% 88%, 50% 100%, 0 88%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tier-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(255,215,0,0.02) 3px,
+        rgba(255,215,0,0.02) 4px
+      );
+      pointer-events: none;
+    }
+
+    .tier-banner-title {
+      font-family: var(--font-stats);
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      line-height: 1;
+      text-shadow: 0 0 40px rgba(255,215,0,0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    .tier-banner-sub {
+      font-family: var(--font-elegant);
+      font-style: italic;
+      color: rgba(232,224,204,0.5);
+      font-size: 1rem;
+      margin-top: var(--spacing-md);
+      letter-spacing: 0.1em;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── TIER ROWS ── */
+    .tiers-container {
+      padding: var(--spacing-2xl) 0;
+    }
+
+    .tier-row {
+      display: flex;
+      align-items: stretch;
+      min-height: 160px;
+      margin-bottom: 4px;
+      position: relative;
+      overflow: visible;
+    }
+
+    /* Left badge column */
+    .tier-badge-col {
+      width: 120px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .tier-letter {
+      font-family: var(--font-imperial);
+      font-size: 3.5rem;
+      font-weight: 900;
+      line-height: 1;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* S+ tier */
+    .tier-row-s .tier-badge-col {
+      background: linear-gradient(135deg, rgba(184,134,11,0.6) 0%, rgba(255,215,0,0.25) 50%, rgba(184,134,11,0.3) 100%);
+    }
+
+    .tier-row-s .tier-letter {
+      animation: tier-glow 2.5s ease-in-out infinite;
+    }
+
+    /* D tier */
+    .tier-row-d .tier-badge-col {
+      background: linear-gradient(135deg, rgba(139,0,0,0.7) 0%, rgba(100,0,0,0.4) 100%);
+    }
+
+    .tier-row-d .tier-letter {
+      color: #c0392b;
+      text-shadow: 0 0 20px rgba(192,57,43,0.5);
+    }
+
+    /* F tier */
+    .tier-row-f .tier-badge-col {
+      background: linear-gradient(135deg, rgba(20,20,20,0.9) 0%, rgba(15,15,15,0.95) 100%);
+    }
+
+    .tier-row-f .tier-letter {
+      color: rgba(200,200,200,0.2);
+    }
+
+    /* ??? tier */
+    .tier-row-void .tier-badge-col {
+      background: #000;
+      position: relative;
+    }
+
+    .tier-row-void .tier-badge-col::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.15;
+      animation: static-noise 0.12s steps(1) infinite, noise-flicker 2s ease-in-out infinite;
+    }
+
+    .tier-row-void .tier-letter {
+      color: rgba(150,150,150,0.15);
+      font-size: 2rem;
+      animation: glitch 4s ease-in-out infinite;
+      position: relative;
+      z-index: 3;
+    }
+
+    /* Content column */
+    .tier-content {
+      flex: 1;
+      padding: var(--spacing-lg) var(--spacing-xl);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-lg);
+      flex-wrap: wrap;
+    }
+
+    .tier-row-s .tier-content {
+      background: linear-gradient(90deg, rgba(184,134,11,0.07) 0%, rgba(10,10,10,0.95) 40%);
+    }
+
+    .tier-row-d .tier-content {
+      background: linear-gradient(90deg, rgba(80,0,0,0.15) 0%, rgba(10,10,10,0.95) 40%);
+    }
+
+    .tier-row-f .tier-content {
+      background: rgba(10,10,10,0.98);
+    }
+
+    .tier-row-void .tier-content {
+      background: #050505;
+    }
+
+    /* Tier label */
+    .tier-label-text {
+      position: absolute;
+      top: 8px; left: 128px;
+      font-family: var(--font-imperial);
+      font-size: 0.55rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+
+    .tier-row-s .tier-label-text { color: var(--gold); }
+    .tier-row-d .tier-label-text { color: var(--crimson-pale); }
+    .tier-row-f .tier-label-text { color: rgba(200,200,200,0.3); }
+    .tier-row-void .tier-label-text { color: transparent; }
+
+    /* ── TIER MEMBER CARD ── */
+    .tier-member-card {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      background: rgba(255,255,255,0.03);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md) var(--spacing-lg);
+      cursor: none;
+      text-decoration: none;
+      color: inherit;
+      flex-shrink: 0;
+    }
+
+    .tier-member-photo {
+      flex-shrink: 0;
+    }
+
+    .tier-member-info { flex: 1; min-width: 160px; }
+
+    .tier-member-name {
+      font-family: var(--font-imperial);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+    }
+
+    .tier-member-quote {
+      font-family: var(--font-elegant);
+      font-style: italic;
+      font-size: 0.82rem;
+      color: rgba(232,224,204,0.5);
+      line-height: 1.4;
+    }
+
+    /* S+ specific */
+    .tier-member-card-vsevolod {
+      border: 1px solid rgba(255,215,0,0.3);
+      background: linear-gradient(135deg, rgba(184,134,11,0.1) 0%, rgba(10,10,10,0.9) 100%);
+    }
+
+    .tier-member-card-vsevolod .tier-member-name { color: var(--gold); font-size: 1.1rem; }
+    .tier-member-card-vsevolod .tier-member-quote { color: rgba(255,215,0,0.7); }
+
+    /* D specific */
+    .tier-member-card-d { border: 1px solid rgba(139,0,0,0.3); }
+    .tier-member-card-d .tier-member-name { color: #c0392b; }
+
+    /* F specific */
+    .tier-member-card-f { border: 1px solid rgba(50,50,50,0.5); opacity: 0.7; }
+    .tier-member-card-f .tier-member-name { color: rgba(200,200,200,0.4); }
+
+    /* ??? specific */
+    .tier-member-card-void {
+      border: none;
+      background: transparent;
+      filter: grayscale(1) contrast(0.5);
+    }
+
+    /* STATS — S+ right side */
+    .vsevolod-stats-panel {
+      margin-left: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: var(--spacing-md);
+      border-left: 1px solid rgba(255,215,0,0.15);
+    }
+
+    .vstat-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .vstat-label {
+      font-family: var(--font-stats);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: rgba(255,215,0,0.5);
+      width: 120px;
+      white-space: nowrap;
+    }
+
+    .vstat-value {
+      font-family: var(--font-stats);
+      font-size: 1.1rem;
+      color: var(--gold);
+      animation: shimmer 3s ease-in-out infinite;
+      letter-spacing: 0.05em;
+    }
+
+    /* Dividers between rows */
+    .tier-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,215,0,0.08) 30%, rgba(255,215,0,0.08) 70%, transparent);
+    }
+
+    /* Legend */
+    .tier-legend {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--spacing-xl);
+      text-align: center;
+    }
+
+    .tier-legend-text {
+      font-family: var(--font-elegant);
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--gray-muted);
+    }
+
+    @media (max-width: 768px) {
+      .tier-badge-col { width: 72px; }
+      .tier-letter { font-size: 2.5rem; }
+      .tier-content { padding: var(--spacing-md); gap: var(--spacing-sm); }
+      .vsevolod-stats-panel { display: none; }
+      .tier-label-text { left: 80px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-logo">Вагинокапиталисты</div>
+  <ul class="navbar-nav">
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="tierlist.html">Тир-лист</a></li>
+    <li><a href="vsevolod.html">Храм</a></li>
+    <li><a href="pasha.html">Паша</a></li>
+    <li><a href="tikhon.html">Тихон</a></li>
+    <li><a href="mark.html">Марк</a></li>
+    <li><a href="senya.html">???</a></li>
+  </ul>
+  <button class="navbar-hamburger" aria-label="Меню"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu">
+  <a href="index.html">Главная</a>
+  <a href="tierlist.html">Тир-лист</a>
+  <a href="vsevolod.html">Храм Всеволода</a>
+  <a href="pasha.html">Паша</a>
+  <a href="tikhon.html">Тихон</a>
+  <a href="mark.html">Марк</a>
+  <a href="senya.html">???</a>
+</div>
+
+<!-- BANNER -->
+<header class="tier-banner scanlines">
+  <h1 class="tier-banner-title">ОФИЦИАЛЬНЫЙ<br/>ТИР-ЛИСТ</h1>
+  <p class="tier-banner-sub">Объективный. Научный. Окончательный. Не обсуждается.</p>
+</header>
+
+<!-- TIERS -->
+<main class="tiers-container">
+
+  <!-- ══ S+ TIER ══ -->
+  <div class="tier-row tier-row-s animate-in">
+    <div class="tier-badge-col">
+      <div class="tier-letter">S+</div>
+    </div>
+    <span class="tier-label-text">БОГОЧЕЛОВЕК</span>
+    <div class="tier-content">
+      <a href="vsevolod.html" class="tier-member-card tier-member-card-vsevolod card card-gold">
+        <div class="tier-member-photo">
+          <div style="width:100px;height:100px;border-radius:50%;padding:3px;background:conic-gradient(var(--gold),var(--gold-dark),var(--gold-pale),var(--gold));animation:spin-slow 6s linear infinite;">
+            <img src="photos/vsevolod/IMG_0241.jpg" alt="Всеволод"
+              style="width:100%;height:100%;border-radius:50%;display:block;object-fit:cover;"/>
+          </div>
+        </div>
+        <div class="tier-member-info">
+          <div class="tier-member-name">ВСЕВОЛОД</div>
+          <div class="tier-member-quote">Превосходит человеческое понимание.<br/>Учёные отказались комментировать.</div>
+        </div>
+      </a>
+
+      <div class="vsevolod-stats-panel">
+        <div class="vstat-row"><span class="vstat-label">Сила</span><span class="vstat-value">∞ / ∞</span></div>
+        <div class="vstat-row"><span class="vstat-label">Интеллект</span><span class="vstat-value">∞ / ∞</span></div>
+        <div class="vstat-row"><span class="vstat-label">Харизма</span><span class="vstat-value">∞ / ∞</span></div>
+        <div class="vstat-row"><span class="vstat-label">Стиль</span><span class="vstat-value">∞ / ∞</span></div>
+        <div class="vstat-row"><span class="vstat-label">Дисциплина</span><span class="vstat-value">∞ / ∞</span></div>
+        <div class="vstat-row"><span class="vstat-label">Размер</span><span class="vstat-value">∞ / ∞</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="tier-divider"></div>
+
+  <!-- ── spacer ── -->
+  <div style="height:32px; background: linear-gradient(180deg, rgba(10,10,10,0) 0%, rgba(80,0,0,0.05) 100%);"></div>
+
+  <!-- ══ D TIER ══ -->
+  <div class="tier-row tier-row-d animate-in">
+    <div class="tier-badge-col">
+      <div class="tier-letter">D</div>
+    </div>
+    <span class="tier-label-text">ПРИШЛИ ЗАЧЕМ-ТО</span>
+    <div class="tier-content">
+
+      <a href="pasha.html" class="tier-member-card tier-member-card-d card">
+        <div class="tier-member-photo">
+          <img src="photos/pasha/IMG_1363.jpg" alt="Паша"
+            style="width:80px;height:80px;border-radius:50%;filter:grayscale(30%) sepia(20%);object-fit:cover;"/>
+        </div>
+        <div class="tier-member-info">
+          <div class="tier-member-name">Паша</div>
+          <div class="tier-member-quote">Двоечник. Фейк-качок.<br/>Будущее: отсутствует.</div>
+        </div>
+      </a>
+
+      <a href="tikhon.html" class="tier-member-card tier-member-card-d card">
+        <div class="tier-member-photo">
+          <img src="photos/tikhon/IMG_2319.JPG" alt="Тихон"
+            style="width:80px;height:80px;border-radius:50%;filter:hue-rotate(15deg) contrast(110%);object-fit:cover;"/>
+        </div>
+        <div class="tier-member-info">
+          <div class="tier-member-name">Тихон</div>
+          <div class="tier-member-quote">Рейдж-машина с тупой причёской.<br/>Постоянно бомбит.</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+  <div class="tier-divider"></div>
+
+  <div style="height:24px; background: rgba(10,10,10,0.5);"></div>
+
+  <!-- ══ F TIER ══ -->
+  <div class="tier-row tier-row-f animate-in">
+    <div class="tier-badge-col">
+      <div class="tier-letter">F</div>
+    </div>
+    <span class="tier-label-text">СТАТИСТИЧЕСКАЯ ПОГРЕШНОСТЬ</span>
+    <div class="tier-content">
+
+      <a href="mark.html" class="tier-member-card tier-member-card-f card">
+        <div class="tier-member-photo">
+          <img src="photos/mark/IMG_2134.jpg" alt="Марк"
+            style="width:80px;height:80px;border-radius:50%;filter:grayscale(60%);object-fit:cover;"/>
+        </div>
+        <div class="tier-member-info">
+          <div class="tier-member-name">Марк</div>
+          <div class="tier-member-quote" style="font-size:0.75rem;">(компенсирует)</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+  <div class="tier-divider"></div>
+
+  <div style="height:24px;"></div>
+
+  <!-- ══ ??? TIER ══ -->
+  <div class="tier-row tier-row-void animate-in">
+    <div class="tier-badge-col">
+      <div class="tier-letter">???</div>
+    </div>
+    <div class="tier-content" style="justify-content: center;">
+
+      <a href="senya.html" class="tier-member-card tier-member-card-void">
+        <div class="tier-member-photo">
+          <img src="photos/senya/IMG_2318.JPG" alt="???"
+            style="width:80px;height:80px;border-radius:50%;object-fit:cover;"/>
+        </div>
+        <div class="tier-member-info">
+          <div class="tier-member-name" style="color:rgba(150,150,150,0.2);font-size:0.7rem;letter-spacing:0.5em;">— — —</div>
+          <div class="tier-member-quote" style="color:rgba(100,100,100,0.2);font-size:0.7rem;">Существует. Предположительно.</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="tier-legend">
+    <div class="gold-line" style="margin:0 auto var(--spacing-lg);"></div>
+    <p class="tier-legend-text">
+      Данный рейтинг является официальным документом. Составлен на основании многолетних наблюдений,
+      научных исследований и очевидной логики. Оспаривание результатов не предусмотрено. Апелляций нет.
+    </p>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-crown">♛</div>
+  <div class="footer-title">Вагинокапиталисты</div>
+  <div class="footer-divider"></div>
+  <p class="footer-sub">Официальный рейтинг. Версия окончательная. Обжалованию не подлежит.</p>
+  <div class="footer-links">
+    <a href="index.html">Главная</a>
+    <a href="tierlist.html">Тир-лист</a>
+    <a href="vsevolod.html">Храм</a>
+    <a href="pasha.html">Паша</a>
+    <a href="tikhon.html">Тихон</a>
+    <a href="mark.html">Марк</a>
+    <a href="senya.html">???</a>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

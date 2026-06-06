@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ВАГИНОКАПИТАЛИСТЫ — Официальный Рейтинг</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    #particle-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(184,134,11,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 var(--spacing-md);
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-imperial);
+      font-size: 0.6rem;
+      letter-spacing: 0.6em;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      margin-bottom: var(--spacing-lg);
+      animation: fade-in-up 0.8s ease 0.2s both;
+    }
+
+    .hero-title {
+      font-family: var(--font-imperial);
+      font-size: clamp(2rem, 6vw, 5.5rem);
+      font-weight: 900;
+      letter-spacing: 0.25em;
+      line-height: 1.05;
+      color: var(--gold);
+      animation: shimmer 4s ease-in-out infinite, fade-in-up 1s ease 0.4s both;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-elegant);
+      font-style: italic;
+      font-size: clamp(0.85rem, 2vw, 1.15rem);
+      color: rgba(232,224,204,0.65);
+      letter-spacing: 0.08em;
+      margin-bottom: var(--spacing-xl);
+      animation: fade-in-up 1s ease 0.6s both;
+    }
+
+    .hero-rule {
+      width: 200px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto var(--spacing-xl);
+      animation: fade-in 1s ease 0.8s both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: var(--spacing-md);
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fade-in-up 1s ease 1s both;
+    }
+
+    /* ── ABOUT ── */
+    .about-section {
+      padding: var(--spacing-2xl) var(--spacing-xl);
+      background: var(--gray-mid);
+      position: relative;
+      clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
+      margin: -3px 0;
+    }
+
+    .about-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--spacing-2xl);
+      align-items: center;
+    }
+
+    .about-numeral {
+      font-family: var(--font-stats);
+      font-size: clamp(140px, 18vw, 260px);
+      line-height: 0.85;
+      color: var(--gold);
+      opacity: 0.12;
+      user-select: none;
+      animation: float-slow 8s ease-in-out infinite;
+    }
+
+    .about-text-block { max-width: 680px; }
+
+    .about-title {
+      font-family: var(--font-imperial);
+      font-size: clamp(1.6rem, 3.5vw, 3rem);
+      color: var(--gold);
+      line-height: 1.15;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .about-body {
+      font-family: var(--font-elegant);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: rgba(232,224,204,0.7);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .about-tagline {
+      font-family: var(--font-elegant);
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--gold-pale);
+      border-left: 3px solid var(--gold-dark);
+      padding-left: var(--spacing-md);
+      margin-top: var(--spacing-lg);
+    }
+
+    /* ── MEMBERS ── */
+    .members-section {
+      padding: var(--spacing-2xl) var(--spacing-xl);
+      position: relative;
+    }
+
+    .members-header {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--spacing-md);
+      max-width: 1200px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .member-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--spacing-lg) var(--spacing-md);
+      border-radius: var(--radius-md);
+      text-align: center;
+      cursor: none;
+      transition: transform 0.4s cubic-bezier(0.23,1,0.32,1),
+                  box-shadow 0.4s cubic-bezier(0.23,1,0.32,1);
+      text-decoration: none;
+    }
+
+    /* Main card — Vsevolod */
+    .member-card-vsevolod {
+      background: linear-gradient(160deg, rgba(184,134,11,0.15) 0%, rgba(10,10,10,0.9) 60%);
+      border: 1px solid var(--gold);
+      box-shadow: 0 0 40px rgba(255,215,0,0.2), inset 0 0 40px rgba(255,215,0,0.04);
+      transform: translateY(-12px) scale(1.05);
+      animation: pulse-gold 3s ease-in-out infinite;
+    }
+
+    .member-card-vsevolod:hover {
+      transform: translateY(-24px) scale(1.08) !important;
+      box-shadow: 0 0 80px rgba(255,215,0,0.5), inset 0 0 60px rgba(255,215,0,0.08) !important;
+    }
+
+    /* Minor cards */
+    .member-card-minor {
+      background: rgba(20,20,20,0.9);
+      border: 1px solid var(--gray-border);
+      filter: saturate(0.6);
+    }
+
+    .member-card-minor:hover {
+      transform: translateY(4px) !important;
+      filter: saturate(0.8);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.7) !important;
+    }
+
+    .member-photo-wrap {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .member-photo-vsevolod {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      overflow: hidden;
+      padding: 3px;
+      background: conic-gradient(var(--gold), var(--gold-dark), var(--gold-pale), var(--gold));
+      animation: spin-slow 8s linear infinite;
+    }
+
+    .member-photo-vsevolod img {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .member-photo-minor {
+      width: 70px; height: 70px;
+      border-radius: 50%;
+      overflow: hidden;
+      opacity: 0.75;
+    }
+
+    .member-photo-minor img {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      display: block;
+      filter: grayscale(40%);
+    }
+
+    .member-name {
+      font-family: var(--font-imperial);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .member-name-vsevolod {
+      color: var(--gold);
+      font-size: 0.85rem;
+    }
+
+    .member-name-minor { color: rgba(232,224,204,0.5); }
+
+    .member-tier {
+      font-family: var(--font-stats);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .tier-badge-s {
+      background: rgba(255,215,0,0.12);
+      color: var(--gold);
+      border: 1px solid rgba(255,215,0,0.3);
+    }
+
+    .tier-badge-d {
+      background: rgba(139,0,0,0.2);
+      color: var(--crimson-pale);
+      border: 1px solid rgba(139,0,0,0.4);
+    }
+
+    .tier-badge-f {
+      background: rgba(30,30,30,0.8);
+      color: rgba(200,200,200,0.3);
+      border: 1px solid rgba(100,100,100,0.2);
+    }
+
+    .tier-badge-void {
+      background: transparent;
+      color: rgba(200,200,200,0.15);
+      border: 1px solid rgba(100,100,100,0.1);
+      font-size: 0.7rem;
+    }
+
+    .member-motto {
+      font-size: 0.7rem;
+      font-style: italic;
+      color: rgba(232,224,204,0.4);
+      margin-top: 8px;
+      line-height: 1.3;
+    }
+
+    .member-motto-gold { color: rgba(255,215,0,0.6); }
+
+    @media (max-width: 900px) {
+      .about-inner { grid-template-columns: 1fr; gap: var(--spacing-lg); }
+      .about-numeral { display: none; }
+      .members-grid { grid-template-columns: repeat(2, 1fr); }
+      .member-card-vsevolod { transform: none; grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 520px) {
+      .members-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-logo">Вагинокапиталисты</div>
+  <ul class="navbar-nav">
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="tierlist.html">Тир-лист</a></li>
+    <li><a href="vsevolod.html">Храм</a></li>
+    <li><a href="pasha.html">Паша</a></li>
+    <li><a href="tikhon.html">Тихон</a></li>
+    <li><a href="mark.html">Марк</a></li>
+    <li><a href="senya.html">???</a></li>
+  </ul>
+  <button class="navbar-hamburger" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu">
+  <a href="index.html">Главная</a>
+  <a href="tierlist.html">Тир-лист</a>
+  <a href="vsevolod.html">Храм Всеволода</a>
+  <a href="pasha.html">Паша</a>
+  <a href="tikhon.html">Тихон</a>
+  <a href="mark.html">Марк</a>
+  <a href="senya.html">???</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="particle-canvas"></canvas>
+  <div class="hero-bg parallax-hero"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Золотой Культ · Основано в Истории</p>
+    <h1 class="hero-title">ВАГИНО<wbr>КАПИТАЛИСТЫ</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-subtitle">Официальный рейтинг. Один бог. Четыре недоразумения.</p>
+    <div class="hero-cta">
+      <a href="vsevolod.html" class="btn"><span>Войти в храм</span></a>
+      <a href="tierlist.html" class="btn"><span>Посмотреть тир-лист</span></a>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>Прокрутить</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section scanlines">
+  <div class="about-inner">
+    <div class="about-numeral animate-in">I</div>
+    <div class="about-text-block">
+      <p class="section-eyebrow animate-in">Основание · Anno Domini</p>
+      <h2 class="about-title animate-in">Происхождение<br/>Легенды</h2>
+      <div class="gold-line animate-in"></div>
+      <p class="about-body animate-in">
+        Из хаоса обычных людей возникло нечто невозможное. Объединение,
+        которое история запомнит навсегда — или предпочтёт забыть,
+        в случае некоторых участников. Пятеро. Один достоин звания.
+        Остальные — декорации.
+      </p>
+      <p class="about-body animate-in">
+        Это не просто рейтинг. Это летопись. Это суд истории.
+        Это та самая правда, которую все знали, но никто не осмеливался
+        произнести вслух.
+      </p>
+      <blockquote class="about-tagline animate-in">
+        "В начале было Слово. Слово было — Всеволод."
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERS PREVIEW -->
+<section class="members-section">
+  <div class="members-header">
+    <p class="section-eyebrow">Полный состав</p>
+    <h2 class="section-title" style="font-size: clamp(1.8rem,4vw,3.2rem);">Участники</h2>
+    <div class="gold-line" style="margin: 0 auto var(--spacing-lg);"></div>
+  </div>
+
+  <div class="members-grid">
+
+    <!-- VSEVOLOD — главный -->
+    <a href="vsevolod.html" class="member-card member-card-vsevolod animate-in">
+      <div class="member-photo-wrap">
+        <div class="member-photo-vsevolod">
+          <img src="photos/vsevolod/IMG_0241.jpg" alt="Всеволод" style="object-fit:cover;"/>
+        </div>
+      </div>
+      <div class="member-name member-name-vsevolod">Всеволод</div>
+      <div class="member-tier tier-badge-s">S+ · БОГОЧЕЛОВЕК</div>
+      <p class="member-motto member-motto-gold">"Превосходит человеческое понимание"</p>
+    </a>
+
+    <!-- PASHA -->
+    <a href="pasha.html" class="member-card member-card-minor animate-in">
+      <div class="member-photo-wrap">
+        <div class="member-photo-minor">
+          <img src="photos/pasha/IMG_1363.jpg" alt="Паша" style="object-fit:cover;"/>
+        </div>
+      </div>
+      <div class="member-name member-name-minor">Паша</div>
+      <div class="member-tier tier-badge-d">D Тир</div>
+      <p class="member-motto">"Пришёл. Непонятно зачем."</p>
+    </a>
+
+    <!-- TIKHON -->
+    <a href="tikhon.html" class="member-card member-card-minor animate-in">
+      <div class="member-photo-wrap">
+        <div class="member-photo-minor">
+          <img src="photos/tikhon/IMG_2319.JPG" alt="Тихон" style="object-fit:cover;"/>
+        </div>
+      </div>
+      <div class="member-name member-name-minor">Тихон</div>
+      <div class="member-tier tier-badge-d">D Тир</div>
+      <p class="member-motto">"Постоянно бомбит"</p>
+    </a>
+
+    <!-- MARK -->
+    <a href="mark.html" class="member-card member-card-minor animate-in">
+      <div class="member-photo-wrap">
+        <div class="member-photo-minor">
+          <img src="photos/mark/IMG_2134.jpg" alt="Марк" style="object-fit:cover;"/>
+        </div>
+      </div>
+      <div class="member-name member-name-minor">Марк</div>
+      <div class="member-tier tier-badge-f">F Тир</div>
+      <p class="member-motto">"..."</p>
+    </a>
+
+    <!-- SENYA -->
+    <a href="senya.html" class="member-card member-card-minor animate-in">
+      <div class="member-photo-wrap">
+        <div class="member-photo-minor">
+          <img src="photos/senya/IMG_2318.JPG" alt="???" style="object-fit:cover;"/>
+        </div>
+      </div>
+      <div class="member-name member-name-minor" style="opacity:0.25;">???</div>
+      <div class="member-tier tier-badge-void">??? Тир</div>
+      <p class="member-motto" style="opacity:0.25;"></p>
+    </a>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-crown">♛</div>
+  <div class="footer-title">Вагинокапиталисты</div>
+  <div class="footer-divider"></div>
+  <p class="footer-sub">Официальный рейтинг. Версия окончательная. Обжалованию не подлежит.</p>
+  <div class="footer-links">
+    <a href="index.html">Главная</a>
+    <a href="tierlist.html">Тир-лист</a>
+    <a href="vsevolod.html">Храм</a>
+    <a href="pasha.html">Паша</a>
+    <a href="tikhon.html">Тихон</a>
+    <a href="mark.html">Марк</a>
+    <a href="senya.html">???</a>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

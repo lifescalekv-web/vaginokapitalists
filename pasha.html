@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ПАША — Тир D</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    :root {
+      --pasha-red: #4a0000;
+      --pasha-red-mid: #700000;
+      --pasha-red-pale: #c0392b;
+      --pasha-border: rgba(139,0,0,0.4);
+    }
+
+    /* ── PAGE HEADER ── */
+    .pasha-header {
+      padding: 140px var(--spacing-xl) var(--spacing-2xl);
+      position: relative;
+      overflow: hidden;
+      clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+      background: linear-gradient(160deg,
+        rgba(74,0,0,0.4) 0%,
+        var(--black) 50%
+      );
+    }
+
+    .pasha-header::before {
+      content: 'D';
+      position: absolute;
+      right: -20px;
+      bottom: -40px;
+      font-family: var(--font-stats);
+      font-size: clamp(200px,28vw,380px);
+      color: rgba(139,0,0,0.07);
+      line-height: 0.8;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .pasha-header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pasha-tier-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(139,0,0,0.2);
+      border: 1px solid var(--pasha-border);
+      border-radius: var(--radius-full);
+      padding: 6px 20px;
+      font-family: var(--font-imperial);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--pasha-red-pale);
+      text-transform: uppercase;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .pasha-name {
+      font-family: var(--font-stats);
+      font-size: clamp(4rem, 12vw, 10rem);
+      color: var(--pasha-red-pale);
+      line-height: 0.9;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .pasha-subtitle {
+      font-family: var(--font-elegant);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: rgba(232,224,204,0.45);
+    }
+
+    /* ── DOSSER ── */
+    .dosser-section {
+      padding: var(--spacing-2xl) var(--spacing-xl);
+    }
+
+    .dosser-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: var(--spacing-2xl);
+      align-items: start;
+    }
+
+    .pasha-photo-col {
+      position: relative;
+    }
+
+    .pasha-photo-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .pasha-photo-wrap::before {
+      content: 'D TIER';
+      position: absolute;
+      top: -10px; left: 50%; transform: translateX(-50%);
+      font-family: var(--font-stats);
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      color: var(--pasha-red-pale);
+      background: var(--black);
+      padding: 2px 12px;
+      border: 1px solid var(--pasha-border);
+      white-space: nowrap;
+    }
+
+    .pasha-photo {
+      width: 220px; height: 220px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--pasha-border);
+      box-shadow: 0 0 30px rgba(139,0,0,0.2), inset 0 0 20px rgba(0,0,0,0.5);
+      display: block;
+    }
+
+    .pasha-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: grayscale(50%) sepia(30%) brightness(0.85);
+    }
+
+    .pasha-photo-caption {
+      font-family: var(--font-imperial);
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      color: rgba(192,57,43,0.4);
+      text-align: center;
+      margin-top: 10px;
+      text-transform: uppercase;
+    }
+
+    /* Dosser card */
+    .dosser-card {
+      background: rgba(74,0,0,0.08);
+      border: 1px solid var(--pasha-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .dosser-card-header {
+      padding: var(--spacing-md) var(--spacing-lg);
+      background: rgba(139,0,0,0.15);
+      border-bottom: 1px solid var(--pasha-border);
+      font-family: var(--font-imperial);
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      color: var(--pasha-red-pale);
+      text-transform: uppercase;
+    }
+
+    .dosser-field {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md) var(--spacing-lg);
+      border-bottom: 1px solid rgba(139,0,0,0.1);
+      align-items: baseline;
+    }
+
+    .dosser-field:last-child { border-bottom: none; }
+
+    .dosser-key {
+      font-family: var(--font-imperial);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: rgba(192,57,43,0.6);
+      text-transform: uppercase;
+    }
+
+    .dosser-val {
+      font-family: var(--font-elegant);
+      font-size: 0.95rem;
+      color: rgba(232,224,204,0.65);
+      font-style: italic;
+    }
+
+    .dosser-val-redacted {
+      background: rgba(139,0,0,0.3);
+      color: var(--pasha-red-pale);
+      font-family: var(--font-stats);
+      font-style: normal;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+
+    /* ── STATS ── */
+    .pasha-stats-section {
+      padding: var(--spacing-2xl) var(--spacing-xl);
+      background: var(--gray-mid);
+      clip-path: polygon(0 3%, 100% 0, 100% 97%, 0 100%);
+    }
+
+    .pasha-stats-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .stat-note {
+      font-family: var(--font-elegant);
+      font-style: italic;
+      font-size: 0.75rem;
+      color: var(--pasha-red-pale);
+      margin-left: var(--spacing-sm);
+    }
+
+    /* ── VERDICT ── */
+    .pasha-verdict-section {
+      padding: var(--spacing-2xl) var(--spacing-xl);
+    }
+
+    @media (max-width: 768px) {
+      .dosser-inner { grid-template-columns: 1fr; }
+      .pasha-photo { width: 160px; height: 160px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-logo">Вагинокапиталисты</div>
+  <ul class="navbar-nav">
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="tierlist.html">Тир-лист</a></li>
+    <li><a href="vsevolod.html">Храм</a></li>
+    <li><a href="pasha.html">Паша</a></li>
+    <li><a href="tikhon.html">Тихон</a></li>
+    <li><a href="mark.html">Марк</a></li>
+    <li><a href="senya.html">???</a></li>
+  </ul>
+  <button class="navbar-hamburger" aria-label="Меню"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu">
+  <a href="index.html">Главная</a>
+  <a href="tierlist.html">Тир-лист</a>
+  <a href="vsevolod.html">Храм Всеволода</a>
+  <a href="pasha.html">Паша</a>
+  <a href="tikhon.html">Тихон</a>
+  <a href="mark.html">Марк</a>
+  <a href="senya.html">???</a>
+</div>
+
+<!-- HEADER -->
+<header class="pasha-header scanlines">
+  <div class="pasha-header-inner">
+    <div class="pasha-tier-badge animate-in">▼ Тир: D ▼ Это много для него</div>
+    <h1 class="pasha-name animate-in">ПАША</h1>
+    <p class="pasha-subtitle animate-in">Дошёл до D-тира. Это потолок его возможностей. Надо отдать должное.</p>
+  </div>
+</header>
+
+<!-- DOSSER -->
+<section class="dosser-section">
+  <div class="dosser-inner">
+    <div class="pasha-photo-col animate-in">
+      <div class="pasha-photo-wrap">
+        <div class="pasha-photo">
+          <img src="photos/pasha/IMG_1363.jpg" alt="Паша" style="object-fit:cover;"/>
+        </div>
+      </div>
+      <p class="pasha-photo-caption">Файл засекречен. Частично.</p>
+    </div>
+
+    <div class="animate-in">
+      <p class="section-eyebrow">Официальное досье</p>
+      <h2 class="section-title" style="font-size:clamp(1.4rem,3vw,2.2rem); color: var(--pasha-red-pale);">Данные субъекта</h2>
+      <div class="gold-line" style="background: linear-gradient(90deg, var(--pasha-red-pale), transparent);"></div>
+
+      <div class="dosser-card">
+        <div class="dosser-card-header">Личное дело № 002 · Гриф: «Не представляет ценности»</div>
+
+        <div class="dosser-field">
+          <span class="dosser-key">Образование</span>
+          <span class="dosser-val">Двоечник. Школа его не оценила. Взаимно.</span>
+        </div>
+        <div class="dosser-field">
+          <span class="dosser-key">Физическая форма</span>
+          <span class="dosser-val">Называет себя качком. Зеркало не согласно. Пятно на чести жанра.</span>
+        </div>
+        <div class="dosser-field">
+          <span class="dosser-key">Интеллект</span>
+          <span class="dosser-val dosser-val-redacted">[ДАННЫЕ УДАЛЕНЫ]</span>
+        </div>
+        <div class="dosser-field">
+          <span class="dosser-key">Перспективы</span>
+          <span class="dosser-val dosser-val-redacted">ФАЙЛ НЕ НАЙДЕН</span>
+        </div>
+        <div class="dosser-field">
+          <span class="dosser-key">Планы на жизнь</span>
+          <span class="dosser-val" style="opacity:0.3;">—</span>
+        </div>
+        <div class="dosser-field">
+          <span class="dosser-key">Отличительные черты</span>
+          <span class="dosser-val">Отсутствуют. Проверялось трижды.</span>
+        </div>
+        <div class="dosser-field">
+          <span class="dosser-key">Польза обществу</span>
+          <span class="dosser-val" style="color: var(--pasha-red-pale);">Предположительно нулевая. Исследования продолжаются.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="pasha-stats-section">
+  <div class="pasha-stats-inner">
+    <div style="text-align:center; margin-bottom: var(--spacing-xl);" class="animate-in">
+      <p class="section-eyebrow" style="color: var(--pasha-red-pale);">Объективная оценка</p>
+      <h2 class="section-title" style="font-size: clamp(1.4rem,3vw,2.2rem); color: var(--pasha-red-pale);">Характеристики</h2>
+      <div class="gold-line" style="background: linear-gradient(90deg, var(--pasha-red-pale), transparent);"></div>
+    </div>
+
+    <div class="animate-in">
+      <div class="stat-row">
+        <div class="stat-label">
+          <span>Интеллект <span class="stat-note">Error 404</span></span>
+          <span class="stat-value" style="color: var(--pasha-red-pale);">8</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="8">
+          <div class="stat-fill stat-fill-red"></div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-label">
+          <span>Физическая форма <span class="stat-note">по его мнению — 95</span></span>
+          <span class="stat-value" style="color: var(--pasha-red-pale);">22</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="22">
+          <div class="stat-fill stat-fill-red"></div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-label">
+          <span>Будущее <span class="stat-note">оптимистичная оценка</span></span>
+          <span class="stat-value" style="color: var(--pasha-red-pale);">3</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="3">
+          <div class="stat-fill stat-fill-red"></div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-label">
+          <span>Польза для общества</span>
+          <span class="stat-value" style="color: var(--pasha-red-pale);">11</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="11">
+          <div class="stat-fill stat-fill-red"></div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-label">
+          <span>Самоосознание</span>
+          <span class="stat-value" style="color: var(--pasha-red-pale);">5</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="5">
+          <div class="stat-fill stat-fill-red"></div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-label">
+          <span>Потенциал роста <span class="stat-note">согласно экстраполяции</span></span>
+          <span class="stat-value" style="color: var(--pasha-red-pale);">18</span>
+        </div>
+        <div class="stat-track stat-bar-animated" data-value="18">
+          <div class="stat-fill stat-fill-red"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VERDICT -->
+<section class="pasha-verdict-section">
+  <div class="verdict-box verdict-box-red animate-in">
+    <p class="verdict-text" style="color: rgba(232,224,204,0.75);">
+      "Случайный гость. Зачем ты здесь?<br/>
+      <em style="font-size:0.9rem; color: rgba(192,57,43,0.7);">Это риторический вопрос. Ответа не требуется.</em>"
+    </p>
+  </div>
+  <div style="text-align:center; margin-top: var(--spacing-xl);">
+    <a href="tierlist.html" class="btn btn-crimson"><span>← Вернуться к тир-листу</span></a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-crown">♛</div>
+  <div class="footer-title">Вагинокапиталисты</div>
+  <div class="footer-divider"></div>
+  <p class="footer-sub">Официальный рейтинг. Версия окончательная. Обжалованию не подлежит.</p>
+  <div class="footer-links">
+    <a href="index.html">Главная</a>
+    <a href="tierlist.html">Тир-лист</a>
+    <a href="vsevolod.html">Храм</a>
+    <a href="pasha.html">Паша</a>
+    <a href="tikhon.html">Тихон</a>
+    <a href="mark.html">Марк</a>
+    <a href="senya.html">???</a>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

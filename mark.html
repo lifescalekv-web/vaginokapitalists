@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>МАРК</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    :root {
+      --mark-blue: #1a1a2e;
+      --mark-blue-mid: #252540;
+      --mark-blue-pale: #5a5a8a;
+      --mark-border: rgba(90,90,138,0.25);
+    }
+
+    /* The page is deliberately cold and sparse */
+    body {
+      background: #080810;
+    }
+
+    /* ── HEADER ── */
+    .mark-header {
+      padding: 160px var(--spacing-xl) var(--spacing-xl);
+      text-align: center;
+      position: relative;
+    }
+
+    .mark-tier-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(90,90,138,0.1);
+      border: 1px solid var(--mark-border);
+      border-radius: var(--radius-full);
+      padding: 5px 16px;
+      font-family: var(--font-imperial);
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      color: rgba(90,90,138,0.6);
+      text-transform: uppercase;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .mark-name {
+      font-family: var(--font-stats);
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      color: rgba(90,90,138,0.6);
+      line-height: 0.9;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .mark-subtitle {
+      font-family: var(--font-elegant);
+      font-style: italic;
+      font-size: 0.9rem;
+      color: rgba(150,150,180,0.3);
+    }
+
+    /* ── MAIN CARD — the center of the page ── */
+    .mark-main-section {
+      padding: var(--spacing-2xl) var(--spacing-xl);
+      display: flex;
+      justify-content: center;
+    }
+
+    .mark-card {
+      background: rgba(26,26,46,0.4);
+      border: 1px solid var(--mark-border);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-2xl);
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+    }
+
+    .mark-card::before {
+      content: 'F TIER';
+      position: absolute;
+      top: -10px; left: 50%; transform: translateX(-50%);
+      font-family: var(--font-imperial);
+      font-size: 0.5rem;
+      letter-spacing: 0.4em;
+      color: rgba(90,90,138,0.4);
+      background: #080810;
+      padding: 2px 12px;
+      border: 1px solid var(--mark-border);
+      white-space: nowrap;
+    }
+
+    .mark-photo-wrap {
+      margin: 0 auto var(--spacing-xl);
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid var(--mark-border);
+      opacity: 0.7;
+    }
+
+    .mark-photo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: grayscale(70%) brightness(0.7) blue(0px);
+    }
+
+    .mark-card-name {
+      font-family: var(--font-imperial);
+      font-size: 1.2rem;
+      letter-spacing: 0.3em;
+      color: rgba(90,90,138,0.7);
+      text-transform: uppercase;
+      margin-bottom: var(--spacing-xl);
+    }
+
+    /* THE MAIN STAT — deliberately brutal */
+    .mark-main-stat {
+      text-align: left;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .mark-stat-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .mark-stat-name {
+      font-family: var(--font-stats);
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      color: rgba(90,90,138,0.6);
+    }
+
+    .mark-stat-value {
+      font-family: var(--font-stats);
+      font-size: 0.85rem;
+      color: rgba(90,90,138,0.4);
+    }
+
+    .mark-stat-track {
+      height: 8px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 4px;
+      width: 100%;
+      position: relative;
+    }
+
+    /* THE INFAMOUS SMALL BAR */
+    .mark-stat-fill {
+      height: 100%;
+      width: 0px;
+      background: linear-gradient(90deg, rgba(90,90,138,0.4), rgba(90,90,138,0.6));
+      border-radius: 4px;
+      transition: width 2s cubic-bezier(0.23, 1, 0.32, 1) 0.5s;
+    }
+
+    .mark-stat-fill.animated {
+      width: 4px; /* The joke. 4px out of 500px track. */
+    }
+
+    .mark-stat-note {
+      font-family: var(--font-elegant);
+      font-style: italic;
+      font-size: 0.7rem;
+      color: rgba(90,90,138,0.35);
+      margin-top: 6px;
+      text-align: center;
+    }
+
+    /* Other minor stats */
+    .mark-minor-stats {
+      margin-top: var(--spacing-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+
+    .mark-minor-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: var(--font-elegant);
+      font-size: 0.8rem;
+    }
+
+    .mark-minor-key {
+      color: rgba(90,90,138,0.4);
+      font-style: italic;
+    }
+
+    .mark-minor-val {
+      font-family: var(--font-stats);
+      font-size: 0.75rem;
+      color: rgba(90,90,138,0.35);
+    }
+
+    /* ── VERDICT (tiny, clinical, devastating) ── */
+    .mark-verdict-section {
+      padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-2xl);
+      text-align: center;
+    }
+
+    .mark-verdict-text {
+      font-family: var(--font-elegant);
+      font-style: italic;
+      font-size: 0.78rem;
+      color: rgba(90,90,138,0.35);
+      max-width: 400px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Empty space decoration — the emptiness is the joke */
+    .mark-void-space {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mark-void-text {
+      font-family: var(--font-imperial);
+      font-size: 0.5rem;
+      letter-spacing: 0.5em;
+      color: rgba(90,90,138,0.1);
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-logo">Вагинокапиталисты</div>
+  <ul class="navbar-nav">
+    <li><a href="index.html">Главная</a></li>
+    <li><a href="tierlist.html">Тир-лист</a></li>
+    <li><a href="vsevolod.html">Храм</a></li>
+    <li><a href="pasha.html">Паша</a></li>
+    <li><a href="tikhon.html">Тихон</a></li>
+    <li><a href="mark.html">Марк</a></li>
+    <li><a href="senya.html">???</a></li>
+  </ul>
+  <button class="navbar-hamburger" aria-label="Меню"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu">
+  <a href="index.html">Главная</a>
+  <a href="tierlist.html">Тир-лист</a>
+  <a href="vsevolod.html">Храм Всеволода</a>
+  <a href="pasha.html">Паша</a>
+  <a href="tikhon.html">Тихон</a>
+  <a href="mark.html">Марк</a>
+  <a href="senya.html">???</a>
+</div>
+
+<!-- HEADER -->
+<header class="mark-header">
+  <div class="mark-tier-badge animate-in">Тир: F · Статистическая погрешность</div>
+  <h1 class="mark-name animate-in">МАРК</h1>
+  <p class="mark-subtitle animate-in">...да.</p>
+</header>
+
+<!-- THE VOID SPACE -->
+<div class="mark-void-space">
+  <span class="mark-void-text">············</span>
+</div>
+
+<!-- MAIN CARD -->
+<section class="mark-main-section">
+  <div class="mark-card animate-in">
+    <div class="mark-photo-wrap">
+      <img src="photos/mark/IMG_2134.jpg" alt="Марк" style="object-fit:cover;"/>
+    </div>
+
+    <div class="mark-card-name">Марк</div>
+
+    <!-- THE INFAMOUS STAT BAR -->
+    <div class="mark-main-stat">
+      <div class="mark-stat-label">
+        <span class="mark-stat-name">Размер</span>
+        <span class="mark-stat-value">—</span>
+      </div>
+      <div class="mark-stat-track" id="mark-track">
+        <div class="mark-stat-fill" id="mark-fill"></div>
+      </div>
+      <p class="mark-stat-note">(это уже включая погрешность измерения)</p>
+    </div>
+
+    <!-- Other minor stats — also pathetic -->
+    <div class="mark-minor-stats">
+      <div class="mark-minor-stat">
+        <span class="mark-minor-key">Общая значимость</span>
+        <span class="mark-minor-val">неизмеримо мала</span>
+      </div>
+      <div class="mark-minor-stat">
+        <span class="mark-minor-key">Присутствие в комнате</span>
+        <span class="mark-minor-val">условное</span>
+      </div>
+      <div class="mark-minor-stat">
+        <span class="mark-minor-key">Компенсаторное поведение</span>
+        <span class="mark-minor-val">очень заметное</span>
+      </div>
+      <div class="mark-minor-stat">
+        <span class="mark-minor-key">Самооценка</span>
+        <span class="mark-minor-val">[не соответствует реальности]</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MORE VOID SPACE -->
+<div class="mark-void-space">
+  <span class="mark-void-text">············</span>
+</div>
+
+<!-- VERDICT -->
+<section class="mark-verdict-section">
+  <p class="mark-verdict-text animate-in">
+    "Маленькая проблема. Большая трагедия.<br/>
+    Мы верим в него.<br/><br/>
+    <span style="opacity:0.5;">Искренне верим.</span><br/>
+    <span style="opacity:0.25;">Почти верим.</span><br/>
+    <span style="opacity:0.1;">Стараемся верить.</span>"
+  </p>
+
+  <div style="margin-top: var(--spacing-xl);">
+    <a href="tierlist.html" class="btn" style="border-color: var(--mark-border); color: rgba(90,90,138,0.5); font-size:0.55rem;">
+      <span>← Вернуться</span>
+    </a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-crown">♛</div>
+  <div class="footer-title">Вагинокапиталисты</div>
+  <div class="footer-divider"></div>
+  <p class="footer-sub">Официальный рейтинг. Версия окончательная. Обжалованию не подлежит.</p>
+  <div class="footer-links">
+    <a href="index.html">Главная</a>
+    <a href="tierlist.html">Тир-лист</a>
+    <a href="vsevolod.html">Храм</a>
+    <a href="pasha.html">Паша</a>
+    <a href="tikhon.html">Тихон</a>
+    <a href="mark.html">Марк</a>
+    <a href="senya.html">???</a>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+  // The infamous 4px bar
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          document.getElementById('mark-fill').classList.add('animated');
+        }, 400);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  const track = document.getElementById('mark-track');
+  if (track) io.observe(track);
+</script>
+</body>
+</html>
