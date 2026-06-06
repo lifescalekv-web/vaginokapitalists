@@ -221,8 +221,18 @@
     }
 
     @media (max-width: 768px) {
+      .pasha-header { padding: 100px var(--spacing-md) var(--spacing-xl); clip-path: none; }
+      .dosser-section { padding: var(--spacing-xl) var(--spacing-md); }
       .dosser-inner { grid-template-columns: 1fr; }
       .pasha-photo { width: 160px; height: 160px; }
+      .pasha-stats-section { padding: var(--spacing-xl) var(--spacing-md); clip-path: none; }
+      .pasha-verdict-section { padding: var(--spacing-xl) var(--spacing-md); }
+      .dosser-field { grid-template-columns: 120px 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .dosser-field { grid-template-columns: 1fr; gap: 4px; }
+      .dosser-key { margin-bottom: 2px; }
     }
   </style>
 </head>

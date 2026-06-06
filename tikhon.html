@@ -288,9 +288,13 @@
     }
 
     @media (max-width: 768px) {
+      .tikhon-header { padding: 100px var(--spacing-md) var(--spacing-xl); clip-path: none; }
+      .tikhon-bio-section { padding: var(--spacing-xl) var(--spacing-md); }
       .tikhon-bio-inner { grid-template-columns: 1fr; }
       .tikhon-photo { width: 160px; height: 160px; }
+      .hair-section { padding: var(--spacing-xl) var(--spacing-md); clip-path: none; }
       .hair-acts { grid-template-columns: 1fr; }
+      .rage-section { padding: var(--spacing-xl) var(--spacing-md); }
       .tikhon-stats { grid-template-columns: 1fr; }
     }
   </style>
@@ -470,7 +474,7 @@
 </section>
 
 <!-- VERDICT -->
-<section style="padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-2xl);">
+<section class="tikhon-verdict-section" style="padding: var(--spacing-xl) var(--spacing-md) var(--spacing-2xl);">
   <div class="verdict-box verdict-box-red animate-in" style="border-color: var(--tikhon-orange-pale);">
     <style>
       .verdict-box-orange::before {

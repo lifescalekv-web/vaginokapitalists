@@ -293,11 +293,23 @@
     }
 
     @media (max-width: 768px) {
-      .tier-badge-col { width: 72px; }
-      .tier-letter { font-size: 2.5rem; }
-      .tier-content { padding: var(--spacing-md); gap: var(--spacing-sm); }
+      .tier-banner { padding: 100px var(--spacing-md) var(--spacing-xl); clip-path: none; }
+      .tier-badge-col { width: 60px; }
+      .tier-letter { font-size: 2rem; }
+      .tier-content { padding: var(--spacing-md); gap: var(--spacing-sm); flex-wrap: wrap; }
       .vsevolod-stats-panel { display: none; }
-      .tier-label-text { left: 80px; }
+      .tier-label-text { display: none; }
+      .tier-member-card { padding: var(--spacing-sm) var(--spacing-md); }
+      .tier-member-info { min-width: 120px; }
+      .tier-member-name { font-size: 0.75rem; }
+      .tier-member-quote { font-size: 0.75rem; }
+      .tier-legend { padding: var(--spacing-lg) var(--spacing-md); }
+    }
+
+    @media (max-width: 480px) {
+      .tier-badge-col { width: 48px; }
+      .tier-letter { font-size: 1.6rem; }
+      .tier-member-quote { display: none; }
     }
   </style>
 </head>

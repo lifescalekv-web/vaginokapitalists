@@ -810,14 +810,72 @@ body::after {
 }
 
 /* ═══════════════════════════════════════════
-   RESPONSIVE
+   TOUCH — disable crown cursor, restore pointer
+═══════════════════════════════════════════ */
+@media (pointer: coarse) {
+  body { cursor: auto; }
+  #custom-cursor { display: none !important; }
+  .btn, a, button { cursor: pointer; }
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — 768px
 ═══════════════════════════════════════════ */
 @media (max-width: 768px) {
+  /* Scale down the two large spacing tokens — fixes padding/gap everywhere */
+  :root {
+    --spacing-xl:  28px;
+    --spacing-2xl: 56px;
+  }
+
   .navbar { padding: 0 var(--spacing-md); }
   .navbar-nav { display: none; }
   .navbar-hamburger { display: flex; }
 
+  /* Mobile menu — tighter on short phones */
+  .mobile-menu { gap: var(--spacing-lg); }
+  .mobile-menu a { font-size: 1rem; letter-spacing: 0.2em; }
+
   .section { padding: var(--spacing-xl) var(--spacing-md); }
   .container { padding: 0 var(--spacing-md); }
-  .page-header { padding: 120px var(--spacing-md) var(--spacing-xl); }
+  .page-header { padding: 100px var(--spacing-md) var(--spacing-xl); }
+
+  /* Testimonials */
+  .testimonial {
+    padding-left: 36px;
+    padding-right: var(--spacing-md);
+  }
+
+  /* Verdict box */
+  .verdict-box {
+    padding: var(--spacing-md) var(--spacing-md);
+    margin: var(--spacing-lg) var(--spacing-md);
+  }
+
+  /* Buttons — full width on mobile */
+  .btn {
+    width: 100%;
+    padding: 14px var(--spacing-md);
+    justify-content: center;
+  }
+
+  /* Footer */
+  .footer { padding: var(--spacing-lg) var(--spacing-md); }
+  .footer-links { gap: var(--spacing-md); }
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — 480px (small phones)
+═══════════════════════════════════════════ */
+@media (max-width: 480px) {
+  :root {
+    --spacing-xl:  20px;
+    --spacing-2xl: 40px;
+  }
+
+  .testimonial { padding-left: 28px; }
+  .testimonial::before { font-size: 3.5rem; }
+
+  .footer-links { gap: var(--spacing-sm); }
+  .footer-links a { font-size: 0.55rem; }
 }
